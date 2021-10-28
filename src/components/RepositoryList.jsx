@@ -7,6 +7,7 @@ const styles = StyleSheet.create({
     separator: {
         height: 10,
     },
+    
 });
 
 const repositories = [
@@ -66,7 +67,6 @@ const RepositoryList = () => {
             data={repositories}
             ItemSeparatorComponent={ItemSeparator}
             renderItem={RenderItem}
-        // other props
         />
     );
 
