@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, Text, Pressable, Alert } from 'react-native';
+import { View, StyleSheet, ScrollView } from 'react-native';
 import Constants from 'expo-constants';
 import AppBarTab from './AppBarTab';
 import { Link } from "react-router-native";
@@ -16,26 +16,17 @@ const styles = StyleSheet.create({
         //flexShrink: 1,
     },
 
-    text: {
-        fontSize: 30,
-        color: 'white'
-    },
-    wrapperCustom: {
-        borderRadius: 0,
-        padding: 6,
-        backgroundColor: 'black'
-    },
-    buttonColor: {
-        color: theme.colors.backgroundColor
-    }
+
 
 });
-
+//HUOM! "ScrollView" -component
 const AppBar = () => {
     return (
         <View style={styles.container}>
-            <AppBarTab buttonName="SignIn" linkTo="/signIn" />
-            <AppBarTab buttonName="Repositories" linkTo="/" />
+            <ScrollView horizontal={true}>
+                <AppBarTab buttonName="SignIn" linkTo="/signIn" />
+                <AppBarTab buttonName="Repositories" linkTo="/" />
+            </ScrollView>
         </View>
     );
 
