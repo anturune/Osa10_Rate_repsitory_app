@@ -3,7 +3,8 @@ import { Pressable, StyleSheet, Alert, Text, View } from 'react-native';
 import theme from '../theme';
 //import AppBar from '.AppBar';
 import Constants from 'expo-constants';
-
+import { Link } from "react-router-native";
+import SignIn from './SignIn';
 
 
 const styles = StyleSheet.create({
@@ -15,8 +16,9 @@ const styles = StyleSheet.create({
         flexWrap: "wrap"
     },
     wrapperCustom: {
-        borderRadius: 8,
+        borderRadius: 0,
         padding: 20,
+        backgroundColor: 'black'
     },
     text: {
         fontSize: 30,
@@ -28,25 +30,41 @@ const styles = StyleSheet.create({
 
 });
 
-//Napin toiminnallisuus
-const AppBarTab = () => {
+const AppBarTab = ({ buttonName, linkTo }) => {
+    console.log('LINKTO', linkTo);
     return (
-        <View styel={styles.container}>
-            <Pressable
-                style={({ pressed }) => [
-                    {
-                        backgroundColor: pressed
-                            ? 'red'
-                            : styles.buttonColor.color
-                    },
+        <Link to={`${linkTo}`}>
+            <Text style={[
+                styles.wrapperCustom,
+                styles.text
+            ]}>{buttonName}
+            </Text>
+        </Link>
 
-                    styles.wrapperCustom
-                ]}
-                onPress={() => Alert.alert('Button Pressed!')}>
-                <Text style={styles.text}>Repoja</Text>
-            </Pressable>
-        </View>
     );
 };
+
+
+/*
+//Napin toiminnallisuus
+const AppBarTab = ({ buttonName, linkTo }) => {
+    console.log('LINKTO', linkTo);
+    return (
+        <Pressable
+            style={({ pressed }) => [
+                {
+                    backgroundColor: pressed
+                        ? 'red'
+                        : styles.buttonColor.color
+                },
+                styles.wrapperCustom
+            ]}
+            onPress={() => <Link to="/signIn" />}>
+            <Text style={styles.text}>{buttonName}</Text>
+        </Pressable>
+
+    );
+};
+*/
 
 export default AppBarTab;

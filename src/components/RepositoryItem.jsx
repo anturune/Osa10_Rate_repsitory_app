@@ -6,9 +6,9 @@ import Text from './Text';
 //Kuvaa varten styleä
 const mainPageStyles = StyleSheet.create({
     container: {
-        alignItems: 'stretch',
+        //alignItems: 'stretch',
         backgroundColor: 'white',
-        
+
     },
 
 });
@@ -137,7 +137,7 @@ const RepositoryBody = ({ item }) => {
 
 const RenderItem = ({ item }) => (
     //console.log('ITEM', item.fullName);
-    <View style={mainPageStyles.container}>
+    <View >
         <RepositoryHeader item={item}></RepositoryHeader>
         <RepositoryBody item={item}></RepositoryBody>
     </View >

@@ -1,13 +1,19 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
-//import Constants from 'expo-constants';
+import { View, StyleSheet, Text, Pressable, Alert } from 'react-native';
+import Constants from 'expo-constants';
+import AppBarTab from './AppBarTab';
+import { Link } from "react-router-native";
+import theme from '../theme';
+
 
 const styles = StyleSheet.create({
     container: {
         //paddingTop: Constants.statusBarHeight,
-        flex: 1,
-        justifyContent: "space-around",
-        flexWrap: "wrap"
+        flex: 0,
+        //flexWrap: "wrap",
+        flexDirection: 'row',
+        //flexGrow: 1,
+        //flexShrink: 1,
     },
 
     text: {
@@ -15,8 +21,12 @@ const styles = StyleSheet.create({
         color: 'white'
     },
     wrapperCustom: {
-        borderRadius: 8,
+        borderRadius: 0,
         padding: 6,
+        backgroundColor: 'black'
+    },
+    buttonColor: {
+        color: theme.colors.backgroundColor
     }
 
 });
@@ -24,7 +34,8 @@ const styles = StyleSheet.create({
 const AppBar = () => {
     return (
         <View style={styles.container}>
-            
+            <AppBarTab buttonName="SignIn" linkTo="/signIn" />
+            <AppBarTab buttonName="Repositories" linkTo="/" />
         </View>
     );
 
