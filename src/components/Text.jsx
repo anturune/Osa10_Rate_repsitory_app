@@ -1,13 +1,26 @@
 import React from 'react';
-import { StyleSheet, Text as NativeText } from 'react-native';
+import { StyleSheet, Text as NativeText, Platform } from 'react-native';
 import theme from '../theme';
 
 
 const styles = StyleSheet.create({
     text: {
-        color: theme.colors.textPrimary,
+        //color: theme.colors.textPrimary,
+        //Tekstin värit käyttöjärjestelmittäin
+        color: Platform.select({
+            android: 'blue',
+            ios: 'green',
+            default: 'black',
+        }),
         fontSize: theme.fontSizes.body,
-        fontFamily: theme.fonts.main,
+        //Tekstin fontit käyttöjärjestelmittäin
+        fontFamily: Platform.select({
+            android: theme.fonts.android,
+            ios: theme.fonts.ios,
+            default: theme.fonts.default,
+        }),
+
+        //fontFamily: theme.fonts.main,
         fontWeight: theme.fontWeights.normal,
     },
     colorTextSecondary: {
