@@ -8,13 +8,15 @@ import Text from './Text';
 const styles = StyleSheet.create({
     errorText: {
         marginTop: 5,
+        color: '#d73a4a',
+        marginLeft: 10
     },
 });
 
 const FormikTextInput = ({ name, ...props }) => {
     const [field, meta, helpers] = useField(name);
     const showError = meta.touched && meta.error;
-    //console.log('TULEEKO FORMIKTEXTINPUTIIN');
+    console.log('TULEEKO FORMIKTEXTINPUTIIN', showError);
     return (
         <>
             <TextInput

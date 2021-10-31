@@ -2,6 +2,7 @@ import React from 'react';
 import { Text, TextInput, Pressable, View, StyleSheet } from 'react-native';
 import { Formik, useField } from 'formik';
 import FormikTextInput from './FormikTextInput';
+import * as yup from 'yup';
 
 //Statistiikan tyylit
 const signInStyles = StyleSheet.create({
@@ -27,13 +28,11 @@ const signInStyles = StyleSheet.create({
     loginTab: {
         borderRadius: 10,
         padding: 20,
-        //backgroundColor: '#0366d6',
         marginLeft: 10,
         marginRight: 10,
         marginTop: 10,
         borderColor: 'black',
         borderWidth: 1,
-        borderEndColor:'black'
     },
     text: {
         fontSize: 30,
@@ -42,17 +41,24 @@ const signInStyles = StyleSheet.create({
     },
     loginText: {
         fontSize: 30,
-        color: 'white',
+        color: 'black',
         textAlign: 'left'
     }
 
 });
-
-
 const initialValues = {
     username: '',
     password: '',
 };
+
+const validationSchema = yup.object().shape({
+    username: yup
+        .number()
+        .required('Username is required'),
+    password: yup
+        .number()
+        .required('Password is required'),
+});
 /*
 const getBodyMassIndex = (mass, height) => {
     return Math.round(mass / Math.pow(height, 2));
@@ -75,7 +81,7 @@ const SignInForm = ({ onSubmit }) => {
 
 const SignIn = () => {
     const onSubmit = (values) => {
-        console.log(values);
+        console.log('KUTSUUKO onSubmitia', values);
     };
     /*
   const onSubmit = values => {
@@ -88,7 +94,11 @@ const SignIn = () => {
   };
 */
     return (
-        <Formik initialValues={initialValues} onSubmit={onSubmit}>
+        <Formik
+            initialValues={initialValues}
+            onSubmit={onSubmit}
+            validationSchema={validationSchema}
+        >
             {({ handleSubmit }) => <SignInForm onSubmit={handleSubmit} />}
         </Formik>
     );

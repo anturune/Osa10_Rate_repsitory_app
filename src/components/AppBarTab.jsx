@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
     wrapperCustom: {
         borderRadius: 0,
         padding: 20,
-        backgroundColor: 'black'
+        backgroundColor: '#24292e'
     },
     text: {
         fontSize: 30,
