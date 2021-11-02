@@ -11,7 +11,7 @@ const apolloClient = createApolloClient();
 
 const App = () => {
   //Tällä nähdää sovelluksen konfiguraatio
-  console.log(Constants.manifest);
+  console.log("Extra, env variable:",Constants.manifest.extra.env);
   return (
     <>
       <NativeRouter>
