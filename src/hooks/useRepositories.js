@@ -2,6 +2,9 @@
 import { GET_REPOSITORIES } from '../graphql/queries';
 import { useQuery } from '@apollo/client';
 
+
+
+
 const useRepositories = () => {
 
   const { data, error, loading } = useQuery(GET_REPOSITORIES,
@@ -10,8 +13,17 @@ const useRepositories = () => {
       // Other options
     });
 
-  console.log('TULEEKO UseRepositoriesiin', data);
+  //console.log('TULEEKO UseRepositoriesiin', data);
+  console.log('TULEEKO UseRepositoriesiinError', error);
+  console.log('TULEEKO UseRepositoriesiinLoading', loading);
 
+  if (loading) {
+    return loading;
+  }
+
+  if (error) {
+    return error;
+  }
   /* 
   const [repositories, setRepositories] = useState();
   const [loading, setLoading] = useState(false);
@@ -33,7 +45,7 @@ const useRepositories = () => {
   }, []);
   */
 
-  return { data, error, loading };
+  return data;
 
   //return { repositories, loading, refetch: fetchRepositories };
 };

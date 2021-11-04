@@ -6,13 +6,14 @@ export const GET_REPOSITORIES = gql`
     repositories {
         edges{
             node{
-              name}
-          }
-          pageInfo{
-            endCursor
-            hasNextPage
-            hasPreviousPage
-            startCursor
+            fullName
+            description
+            language
+            forksCount
+            stargazersCount
+            ratingAverage
+            reviewCount
+            ownerAvatarUrl}
           }
           totalCount
         }

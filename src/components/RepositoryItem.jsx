@@ -67,6 +67,7 @@ const repositoryHeaderStyles = StyleSheet.create({
 
 //Headerin renderöintiin komponentti
 const RepositoryHeader = ({ item }) => {
+    //console.log('REPOSITORY HEADER', item);
     return (
         <View style={repositoryHeaderStyles.container}>
             <View style={repositoryHeaderStyles.avatarrContainer}>
@@ -112,6 +113,7 @@ const repositoryBodyStyles = StyleSheet.create({
 
 //Statistiikan renderöintiin komponentti
 const RepositoryBody = ({ item }) => {
+    //console.log('ITEM', item);
     return (
         <View style={repositoryBodyStyles.container}>
             <View style={repositoryBodyStyles.statisticsContainer} >
@@ -136,10 +138,10 @@ const RepositoryBody = ({ item }) => {
 
 
 const RenderItem = ({ item }) => (
-    //console.log('ITEM', item.fullName);
+    //console.log('ITEM');
     <View >
-        <RepositoryHeader item={item}></RepositoryHeader>
-        <RepositoryBody item={item}></RepositoryBody>
+        <RepositoryHeader item={item} key={item.id}></RepositoryHeader>
+        <RepositoryBody item={item} key={item.id}></RepositoryBody>
     </View >
 );
 

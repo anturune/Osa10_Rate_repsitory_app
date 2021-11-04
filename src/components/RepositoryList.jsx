@@ -63,13 +63,12 @@ const ItemSeparator = () => <View style={styles.separator} />;
 
 const RepositoryList = () => {
     const { repositories } = useRepositories();
-
     // Get the nodes from the edges array
     const repositoryNodes = repositories
         ? repositories.edges.map(edge => edge.node)
         : [];
 
-
+    //console.log('REPSOITORIES', repositoryNodes);
 
     return (
         <FlatList

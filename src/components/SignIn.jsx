@@ -3,6 +3,7 @@ import { Text, TextInput, Pressable, View, StyleSheet } from 'react-native';
 import { Formik, useField } from 'formik';
 import FormikTextInput from './FormikTextInput';
 import * as yup from 'yup';
+import useSignIn from '../hooks/useSignIn';
 
 //Statistiikan tyylit
 const signInStyles = StyleSheet.create({
@@ -53,17 +54,13 @@ const initialValues = {
 
 const validationSchema = yup.object().shape({
     username: yup
-        .number()
+        .string()
         .required('Username is required'),
     password: yup
-        .number()
+        .string()
         .required('Password is required'),
 });
-/*
-const getBodyMassIndex = (mass, height) => {
-    return Math.round(mass / Math.pow(height, 2));
-};
-*/
+
 const SignInForm = ({ onSubmit }) => {
     return (
         <View style={signInStyles.container}>
@@ -80,19 +77,36 @@ const SignInForm = ({ onSubmit }) => {
 };
 
 const SignIn = () => {
-    const onSubmit = (values) => {
-        console.log('KUTSUUKO onSubmitia', values);
+    //const onSubmit = (values) => {
+    console.log('KUTSUUKO onSubmitia');
+
+    const [signIn] = useSignIn();
+    
+    //console.log('KUTSUUKO onSubmitia');
+    
+    const onSubmit = async (values) => {
+        //console.log('KUTSUUKO onSubmitia',values);
+        const { username, password } = values;
+        //console.log('SIGNIN COMPONENT', username, 'JA', password);
+        try {
+            console.log('tuleeko tryihin DATAAA');
+            const { data } = await signIn({ username, password });
+            console.log('DATAAA', data);
+        } catch (e) {
+            console.log('DATAAA Errorista');
+            console.log(e);
+        }
     };
     /*
-  const onSubmit = values => {
+    const onSubmit = values => {
       const username = parseFloat(values.username);
       const password = parseFloat(values.password);
-
+    
       if (!isNaN(username) && !isNaN(password) && password !== 0) {
           console.log(`Your body mass index is: ${getBodyMassIndex(username, password)}`);
       }
-  };
-*/
+    };
+    */
     return (
         <Formik
             initialValues={initialValues}
