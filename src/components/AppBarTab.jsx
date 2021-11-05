@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
 });
 
 const AppBarTab = ({ buttonName, linkTo }) => {
-    console.log('LINKTO', linkTo);
+    //console.log('LINKTO', linkTo);
     return (
         <Link to={`${linkTo}`}>
             <Text style={[

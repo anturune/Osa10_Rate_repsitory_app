@@ -4,6 +4,7 @@ import { Formik, useField } from 'formik';
 import FormikTextInput from './FormikTextInput';
 import * as yup from 'yup';
 import useSignIn from '../hooks/useSignIn';
+import AuthStorage from '../utils/authStorage';
 
 //Statistiikan tyylit
 const signInStyles = StyleSheet.create({
@@ -81,9 +82,9 @@ const SignIn = () => {
     console.log('KUTSUUKO onSubmitia');
 
     const [signIn] = useSignIn();
-    
+
     //console.log('KUTSUUKO onSubmitia');
-    
+
     const onSubmit = async (values) => {
         //console.log('KUTSUUKO onSubmitia',values);
         const { username, password } = values;
@@ -91,12 +92,17 @@ const SignIn = () => {
         try {
             console.log('tuleeko tryihin DATAAA');
             const { data } = await signIn({ username, password });
-            console.log('DATAAA', data);
+            //console.log('DATAAA', data.authorize.accessToken);
+            const setTokenToStorage = new AuthStorage('auth');
+            await setTokenToStorage.setAccessToken(data.authorize.accessToken);
+            console.log('ONKO LOCAL STORAGESSA TOKENI',await setTokenToStorage.getAccessToken());
+
         } catch (e) {
             console.log('DATAAA Errorista');
             console.log(e);
         }
     };
+
     /*
     const onSubmit = values => {
       const username = parseFloat(values.username);

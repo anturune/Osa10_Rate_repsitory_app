@@ -14,8 +14,8 @@ const useRepositories = () => {
     });
 
   //console.log('TULEEKO UseRepositoriesiin', data);
-  console.log('TULEEKO UseRepositoriesiinError', error);
-  console.log('TULEEKO UseRepositoriesiinLoading', loading);
+  //console.log('TULEEKO UseRepositoriesiinError', error);
+  //console.log('TULEEKO UseRepositoriesiinLoading', loading);
 
   if (loading) {
     return loading;
@@ -24,7 +24,16 @@ const useRepositories = () => {
   if (error) {
     return error;
   }
-  /* 
+  
+  return data;
+
+  //return { repositories, loading, refetch: fetchRepositories };
+};
+
+export default useRepositories;
+
+
+/* 
   const [repositories, setRepositories] = useState();
   const [loading, setLoading] = useState(false);
   console.log('TULEEKO UseRepositoriesiin', repositories);
@@ -44,10 +53,3 @@ const useRepositories = () => {
     fetchRepositories();
   }, []);
   */
-
-  return data;
-
-  //return { repositories, loading, refetch: fetchRepositories };
-};
-
-export default useRepositories;

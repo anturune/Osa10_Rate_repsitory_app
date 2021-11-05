@@ -69,12 +69,13 @@ const RepositoryList = () => {
         : [];
 
     //console.log('REPSOITORIES', repositoryNodes);
-
+    //KeyExtractor tarvitaan, jotta saadaan uniikit id:t renderöitäville
     return (
         <FlatList
             data={repositoryNodes}
             ItemSeparatorComponent={ItemSeparator}
             renderItem={RenderItem}
+            keyExtractor={(item, index) => index.toString()}
         />
     );
 
