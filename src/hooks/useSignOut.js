@@ -1,8 +1,9 @@
-
 import { SIGN_IN_MUTATION } from '../graphql/mutations';
 import { useMutation } from '@apollo/client';
 import useAuthStorage from '../hooks/useAuthStorage';
 import { useApolloClient } from '@apollo/client';
+import { useQuery } from '@apollo/client';
+import { GET_LOGGED_IN_USER } from '../graphql/queries';
 
 /*Ks. seuraavat filet kuinka storagen käyttö contextissa mahdollistetaan
     12.1) ks. App.js
@@ -12,6 +13,39 @@ import { useApolloClient } from '@apollo/client';
     12.5) ks. src/hooks/useSignIn.js
     */
 
+const useSignOut = () => {
+    const authStorage = useAuthStorage();
+    const apolloClient = useApolloClient();
+    const { data, loading } = useQuery(GET_LOGGED_IN_USER);
+
+    const signOut = async () => {
+
+        console.log('KUTSUUKO signOutia');
+
+        //console.log('SIGNIN COMPONENT', username, 'JA', password);
+        try {
+
+            await authStorage.removeAccessToken();
+            apolloClient.resetStore();
+            //const { data } = await authStorage.getAccessToken();
+            //const { data } = await query();
+            console.log('AUTHSTORGAE getAccessToken', data);
+            //history.push("/");
+            return { data };
+
+        } catch (e) {
+            console.log('DATAAA Errorista');
+            console.log(e);
+        }
+    };
+    return [signOut];
+};
+
+
+export default useSignOut;
+
+
+/*
 const useSignIn = () => {
     const authStorage = useAuthStorage();
     const [mutate, result] = useMutation(SIGN_IN_MUTATION);
@@ -37,3 +71,4 @@ const useSignIn = () => {
 };
 
 export default useSignIn;
+*/

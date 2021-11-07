@@ -1,10 +1,11 @@
 import React from 'react';
-import { Text, TextInput, Pressable, View, StyleSheet } from 'react-native';
-import { Formik, useField } from 'formik';
+import { Text, Pressable, View, StyleSheet } from 'react-native';
+import { Formik } from 'formik';
 import FormikTextInput from './FormikTextInput';
 import * as yup from 'yup';
 import useSignIn from '../hooks/useSignIn';
-import AuthStorage from '../utils/authStorage';
+import { useHistory } from "react-router-native";
+
 
 //Statistiikan tyylit
 const signInStyles = StyleSheet.create({
@@ -77,25 +78,27 @@ const SignInForm = ({ onSubmit }) => {
     );
 };
 
+
+
 const SignIn = () => {
+    let history = useHistory();
     //const onSubmit = (values) => {
     console.log('KUTSUUKO onSubmitia');
 
     const [signIn] = useSignIn();
-
+    
     //console.log('KUTSUUKO onSubmitia');
 
     const onSubmit = async (values) => {
+        
         //console.log('KUTSUUKO onSubmitia',values);
         const { username, password } = values;
         //console.log('SIGNIN COMPONENT', username, 'JA', password);
         try {
             console.log('tuleeko tryihin DATAAA');
             const { data } = await signIn({ username, password });
-            //console.log('DATAAA', data.authorize.accessToken);
-            const setTokenToStorage = new AuthStorage('auth');
-            await setTokenToStorage.setAccessToken(data.authorize.accessToken);
-            console.log('ONKO LOCAL STORAGESSA TOKENI',await setTokenToStorage.getAccessToken());
+            console.log('DATAAA', data.authorize.accessToken);
+            history.push("/");
 
         } catch (e) {
             console.log('DATAAA Errorista');

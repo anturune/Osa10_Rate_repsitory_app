@@ -4,7 +4,7 @@ import theme from '../theme';
 //import AppBar from '.AppBar';
 import Constants from 'expo-constants';
 import { Link } from "react-router-native";
-import SignIn from './SignIn';
+//import SignIn from './SignIn';
 
 
 const styles = StyleSheet.create({
@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
 });
 
 const AppBarTab = ({ buttonName, linkTo }) => {
-    //console.log('LINKTO', linkTo);
+    console.log('LINKTO', linkTo);
     return (
         <Link to={`${linkTo}`}>
             <Text style={[
