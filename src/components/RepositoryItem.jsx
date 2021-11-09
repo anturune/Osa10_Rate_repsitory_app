@@ -13,15 +13,29 @@ const mainPageStyles = StyleSheet.create({
 
 });
 
-
+/*
 //Muunnetaan "kiloiksi" yli 1000 arvot
 const YksikonMuunnos = ({ value }) => {
+    //console.log('yksikönmuunnos',value);
     let kiloValue = 0;
     if (value >= 1000) {
         kiloValue = value / 1000;
-        return (<Text fontWeight="bold" fontSize="primary">{kiloValue.toFixed(1)}k</Text>);
+        return (<Text testId="ratingAverageTest" fontWeight="bold" fontSize="primary">{kiloValue.toFixed(1)}k</Text>);
     }
-    return <Text fontWeight="bold" fontSize="primary">{value}</Text>;
+    return <Text testId="ratingAverageTokaTest" fontWeight="bold" fontSize="primary">{value}</Text>;
+};
+*/
+
+//Muunnetaan "kiloiksi" yli 1000 arvot
+const yksikonMuunnos = (value) => {
+    //console.log('yksikönmuunnos', value);
+    let kiloValue = 0;
+    if (value >= 1000) {
+        kiloValue = value / 1000;
+        //console.log('KILOVAlue', kiloValue);
+        return kiloValue.toFixed(1) + 'k';
+    }
+    return value;
 };
 
 //Headerin tyylit
@@ -77,10 +91,10 @@ const RepositoryHeader = ({ item }) => {
                 </Image>
             </View>
             <View style={repositoryHeaderStyles.infoContainer}>
-                <Text fontWeight="bold" fontSize="subheading"> {item.fullName}</Text>
-                <Text >{item.description}</Text>
+                <Text testID="fullNameTest" fontWeight="bold" fontSize="subheading"> {item.fullName}</Text>
+                <Text testID="descriptionTest">{item.description}</Text>
                 <View style={repositoryHeaderStyles.languageTagContainer}>
-                    <Text style={[
+                    <Text testID="languageTagTest" style={[
                         repositoryHeaderStyles.languageTag,
                         repositoryHeaderStyles.whiteTextForLanguageTag]}> {item.language}</Text>
                 </View>
@@ -117,20 +131,20 @@ const RepositoryBody = ({ item }) => {
     return (
         <View style={repositoryBodyStyles.container}>
             <View style={repositoryBodyStyles.statisticsContainer} >
-                <YksikonMuunnos value={item.stargazersCount}>  </YksikonMuunnos>
-                <Text color='textSecondary' fontSize="body">Stars</Text>
+                <Text testID="starsTestValue" fontWeight="bold" fontSize="primary">  {yksikonMuunnos(item.stargazersCount)} </Text>
+                <Text testID="starsTest" color='textSecondary' fontSize="body">Stars</Text>
             </View>
             <View style={repositoryBodyStyles.statisticsContainer} >
-                <YksikonMuunnos value={item.forksCount}>  </YksikonMuunnos>
-                <Text color='textSecondary' fontSize="body">Forks</Text>
+                <Text testID="forksCountValueTest" fontWeight="bold" fontSize="primary">  {yksikonMuunnos(item.forksCount)} </Text>
+                <Text testID="forksCountTest" color='textSecondary' fontSize="body">Forks</Text>
             </View>
             <View style={repositoryBodyStyles.statisticsContainer} >
-                <YksikonMuunnos value={item.reviewCount}>  </YksikonMuunnos>
-                <Text color='textSecondary' fontSize="body">Reviewers</Text>
+                <Text testID="reviewersTestValue" fontWeight="bold" fontSize="primary"> {yksikonMuunnos(item.reviewCount)} </Text>
+                <Text testID="reviewersTest" color='textSecondary' fontSize="body">Reviewers</Text>
             </View>
             <View style={repositoryBodyStyles.statisticsContainer} >
-                <YksikonMuunnos value={item.ratingAverage}>  </YksikonMuunnos>
-                <Text color='textSecondary' fontSize="body">Rating</Text>
+                <Text testID="ratingTestValue" fontWeight="bold" fontSize="primary"> {yksikonMuunnos(item.ratingAverage)} </Text>
+                <Text testID="ratingTest" color='textSecondary' fontSize="body">Rating</Text>
             </View>
         </View>
     );
@@ -141,7 +155,7 @@ const RenderItem = ({ item }) => (
     //console.log('ITEM');
     <View >
         <RepositoryHeader item={item} key={item.id}></RepositoryHeader>
-        <RepositoryBody item={item} key={item.id}></RepositoryBody>
+        <RepositoryBody item={item} key={item.fullName}></RepositoryBody>
     </View >
 );
 
