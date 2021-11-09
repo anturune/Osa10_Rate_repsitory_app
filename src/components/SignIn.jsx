@@ -66,9 +66,9 @@ const validationSchema = yup.object().shape({
 const SignInForm = ({ onSubmit }) => {
     return (
         <View style={signInStyles.container}>
-            <FormikTextInput name="username" placeholder="Username" style={[signInStyles.loginText, signInStyles.loginTab]} />
-            <FormikTextInput name="password" placeholder="Password" style={[signInStyles.loginText, signInStyles.loginTab]} />
-            <Pressable onPress={onSubmit}>
+            <FormikTextInput testID='usernameField' name="username" placeholder="Username" style={[signInStyles.loginText, signInStyles.loginTab]} />
+            <FormikTextInput testID='passwordField' name="password" placeholder="Password" style={[signInStyles.loginText, signInStyles.loginTab]} />
+            <Pressable testID='submitButton' onPress={onSubmit}>
                 <Text style={
                     [signInStyles.signInTab,
                     signInStyles.text
@@ -77,20 +77,60 @@ const SignInForm = ({ onSubmit }) => {
         </View>
     );
 };
+//Tämä komponentti, jotta voidaan testata ilman että tarvii ApolloClientin läpi ajaa
+//sekä local storagea ei tarvitse käyttää 
+export const SignInHandler = ({ onSubmit }) => {
+    //console.log('TULEEKO SignInHandleriin');
+    return (
+        <Formik
+            initialValues={initialValues}
+            onSubmit={onSubmit}
+            validationSchema={validationSchema}
+        >
+            {({ handleSubmit }) => <SignInForm onSubmit={handleSubmit} />}
+        </Formik>
+    );
+};
 
 
+const SignIn = () => {
+    //Jotta voidaan mennä halutulle sivulle submitin jälkeen
+    let history = useHistory();
 
+    const [signIn] = useSignIn();
+
+    const onSubmit = async (values) => {
+
+        //console.log('KUTSUUKO onSubmitia',values);
+        const { username, password } = values;
+
+        try {
+            console.log('tuleeko tryihin DATAAA');
+            const { data } = await signIn({ username, password });
+            console.log('DATAAA', data.authorize.accessToken);
+            history.push("/");
+
+        } catch (e) {
+            console.log('DATAAA Errorista');
+            console.log(e);
+        }
+    };
+    return <SignInHandler onSubmit={onSubmit} />;
+};
+export default SignIn;
+
+/*
 const SignIn = () => {
     let history = useHistory();
     //const onSubmit = (values) => {
     console.log('KUTSUUKO onSubmitia');
 
     const [signIn] = useSignIn();
-    
+
     //console.log('KUTSUUKO onSubmitia');
 
     const onSubmit = async (values) => {
-        
+
         //console.log('KUTSUUKO onSubmitia',values);
         const { username, password } = values;
         //console.log('SIGNIN COMPONENT', username, 'JA', password);
@@ -110,20 +150,21 @@ const SignIn = () => {
     const onSubmit = values => {
       const username = parseFloat(values.username);
       const password = parseFloat(values.password);
-    
+
       if (!isNaN(username) && !isNaN(password) && password !== 0) {
           console.log(`Your body mass index is: ${getBodyMassIndex(username, password)}`);
       }
     };
     */
-    return (
-        <Formik
-            initialValues={initialValues}
-            onSubmit={onSubmit}
-            validationSchema={validationSchema}
-        >
-            {({ handleSubmit }) => <SignInForm onSubmit={handleSubmit} />}
-        </Formik>
-    );
+/*
+ return (
+     <Formik
+         initialValues={initialValues}
+         onSubmit={onSubmit}
+         validationSchema={validationSchema}
+     >
+         {({ handleSubmit }) => <SignInForm onSubmit={handleSubmit} />}
+     </Formik>
+ );
 };
-export default SignIn;
+*/
