@@ -1,7 +1,10 @@
 import React from 'react';
-import { View, Image, StyleSheet } from 'react-native';
+import { View, Image, StyleSheet, Pressable, Linking } from 'react-native';
 import Constants from 'expo-constants';
 import Text from './Text';
+import { useHistory, useParams } from "react-router-native";
+
+
 
 //Kuvaa varten styleä
 const mainPageStyles = StyleSheet.create({
@@ -77,18 +80,45 @@ const repositoryHeaderStyles = StyleSheet.create({
         fontSize: 16,
         color: 'white'
     },
-});
+    linkToRepoTag: {
+        borderRadius: 5,
+        backgroundColor: '#0366d6',
+        //Saadaan tekstin ympärillä olevan boxin koko
+        //sovitettua tekstin määrän mukaiseksi
+        //alignSelf: "stretch",
+        width: "auto",
+        textAlign: "center",
+        paddingVertical: 15,
 
+    }
+});
+/*
+const renderSomething = ({ itemId, history }) => {
+    console.log('renderSomething', itemId);
+
+    history.push(`/singleRepsoitory/${itemId}`);
+};
+*/
 //Headerin renderöintiin komponentti
 const RepositoryHeader = ({ item }) => {
-    //console.log('REPOSITORY HEADER', item);
+    let history = useHistory();
+
+    //const { itemId } = useParams();
+    //console.log('REPOSITORY HEADER', item.id);
+
+    const goToSingleView = (id) => {
+        //console.log('renderSomething', id);
+        history.push(`/singleRepsoitory/${id}`);
+    };
     return (
         <View style={repositoryHeaderStyles.container}>
             <View style={repositoryHeaderStyles.avatarrContainer}>
-                <Image
-                    style={repositoryHeaderStyles.avatar}
-                    source={{ uri: `${item.ownerAvatarUrl}` }}>
-                </Image>
+                <Pressable onPress={() => goToSingleView(item.id)} >
+                    <Image
+                        style={repositoryHeaderStyles.avatar}
+                        source={{ uri: `${item.ownerAvatarUrl}` }}>
+                    </Image>
+                </Pressable>
             </View>
             <View style={repositoryHeaderStyles.infoContainer}>
                 <Text testID="fullNameTest" fontWeight="bold" fontSize="subheading"> {item.fullName}</Text>
@@ -123,39 +153,68 @@ const repositoryBodyStyles = StyleSheet.create({
     infoContainer: {
         flexGrow: 1,
     },
+    linkToGitHupContainer: {
+        alignItems: 'stretch',
+        flexDirection: 'column',
+        padding: 20,
+        flexGrow: 0,
+
+    }
 });
 
 //Statistiikan renderöintiin komponentti
-const RepositoryBody = ({ item }) => {
+const RepositoryBody = ({ item, linkToRepo }) => {
     //console.log('ITEM', item);
+    //console.log('RepositoryBody', linkToRepo);
     return (
-        <View style={repositoryBodyStyles.container}>
-            <View style={repositoryBodyStyles.statisticsContainer} >
-                <Text testID="starsTestValue" fontWeight="bold" fontSize="primary">  {yksikonMuunnos(item.stargazersCount)} </Text>
-                <Text testID="starsTest" color='textSecondary' fontSize="body">Stars</Text>
+        <View>
+            <View style={repositoryBodyStyles.container}>
+                <View style={repositoryBodyStyles.statisticsContainer} >
+                    <Text testID="starsTestValue" fontWeight="bold" fontSize="primary">  {yksikonMuunnos(item.stargazersCount)} </Text>
+                    <Text testID="starsTest" color='textSecondary' fontSize="body">Stars</Text>
+                </View>
+                <View style={repositoryBodyStyles.statisticsContainer} >
+                    <Text testID="forksCountValueTest" fontWeight="bold" fontSize="primary">  {yksikonMuunnos(item.forksCount)} </Text>
+                    <Text testID="forksCountTest" color='textSecondary' fontSize="body">Forks</Text>
+                </View>
+                <View style={repositoryBodyStyles.statisticsContainer} >
+                    <Text testID="reviewersTestValue" fontWeight="bold" fontSize="primary"> {yksikonMuunnos(item.reviewCount)} </Text>
+                    <Text testID="reviewersTest" color='textSecondary' fontSize="body">Reviewers</Text>
+                </View>
+                <View style={repositoryBodyStyles.statisticsContainer} >
+                    <Text testID="ratingTestValue" fontWeight="bold" fontSize="primary"> {yksikonMuunnos(item.ratingAverage)} </Text>
+                    <Text testID="ratingTest" color='textSecondary' fontSize="body">Rating</Text>
+                </View>
             </View>
-            <View style={repositoryBodyStyles.statisticsContainer} >
-                <Text testID="forksCountValueTest" fontWeight="bold" fontSize="primary">  {yksikonMuunnos(item.forksCount)} </Text>
-                <Text testID="forksCountTest" color='textSecondary' fontSize="body">Forks</Text>
-            </View>
-            <View style={repositoryBodyStyles.statisticsContainer} >
-                <Text testID="reviewersTestValue" fontWeight="bold" fontSize="primary"> {yksikonMuunnos(item.reviewCount)} </Text>
-                <Text testID="reviewersTest" color='textSecondary' fontSize="body">Reviewers</Text>
-            </View>
-            <View style={repositoryBodyStyles.statisticsContainer} >
-                <Text testID="ratingTestValue" fontWeight="bold" fontSize="primary"> {yksikonMuunnos(item.ratingAverage)} </Text>
-                <Text testID="ratingTest" color='textSecondary' fontSize="body">Rating</Text>
-            </View>
+            {/* ehdollinen renderöinti, kun katsotaan yksittäistä repositorya*/}
+            {linkToRepo && (
+                <View style={repositoryBodyStyles.linkToGitHupContainer}>
+                    <Pressable onPress={() => Linking.openURL(item.url)} >
+                        <Text style={[
+                            repositoryHeaderStyles.linkToRepoTag,
+                            repositoryHeaderStyles.whiteTextForLanguageTag]}>Go To Github Site</Text>
+                    </Pressable>
+                </View>
+            )}
         </View>
     );
+
 };
+/*
+Tällä compolla myös toimii eli ajetaan funktio painalluksen jälkeen:
+<Pressable onPress={() => gitHubSite(item.url)} >
+const gitHubSite = (url) => {
+    Linking.openURL(url);
+};
+*/
 
 
-const RenderItem = ({ item }) => (
+const RenderItem = ({ item, linkToRepo }) => (
     //console.log('ITEM');
+
     <View >
         <RepositoryHeader item={item} key={item.id}></RepositoryHeader>
-        <RepositoryBody item={item} key={item.fullName}></RepositoryBody>
+        <RepositoryBody item={item} key={item.fullName} linkToRepo={linkToRepo}></RepositoryBody>
     </View >
 );
 

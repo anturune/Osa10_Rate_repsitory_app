@@ -1,5 +1,5 @@
 import React from 'react';
-import { FlatList, View, StyleSheet } from 'react-native';
+import { FlatList, View, StyleSheet, Pressable, Text } from 'react-native';
 import RenderItem from './RepositoryItem';
 import useRepositories from '../hooks/useRepositories';
 
@@ -59,19 +59,26 @@ const repositories = [
 ];
 */
 
+
+
+
+
+
 export const RepositoryListContainer = ({ repositories }) => {
-    console.log('TULEEKO REPOSITORYLISTCONTAINERIIN');
+    //console.log('TULEEKO REPOSITORYLISTCONTAINERIIN');
     const repositoryNodes = repositories
         ? repositories.edges.map((edge) => edge.node)
         : [];
 
     return (
+
         <FlatList
             data={repositoryNodes}
             ItemSeparatorComponent={ItemSeparator}
             renderItem={RenderItem}
             keyExtractor={(item, index) => index.toString()}
         />
+
     );
 };
 

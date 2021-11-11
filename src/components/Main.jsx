@@ -12,6 +12,7 @@ import AppBar from './AppBar';
 import { Route, Switch, Redirect } from 'react-router-native';
 import SignIn from './SignIn';
 import SignOutTab from './SignOutTab';
+import SingleRepository from './SingleRepositoryView';
 
 
 
@@ -42,6 +43,9 @@ const Main = () => {
                 </Route>
                 <Route path="/signOut">
                     <SignOutTab />
+                </Route>
+                <Route path="/singleRepsoitory/:id">
+                    <SingleRepository />
                 </Route>
                 <Route path="/" exact>
                     <RepositoryList />
