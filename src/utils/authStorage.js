@@ -10,14 +10,14 @@ class AuthStorage {
         const accessToken = await AsyncStorage.getItem(
             `${this.namespace}:accessToken`,
         );
-        console.log('IS TOKEN IN STORAGE utils/authStorage.js', accessToken);
+        //console.log('IS TOKEN IN STORAGE utils/authStorage.js', accessToken);
 
         return accessToken ? JSON.parse(accessToken) : '';
     }
 
     async setAccessToken(accessToken) {
         // Add the access token to the storage
-        console.log('TULEEKO setAccessTokeniin', accessToken);
+        //console.log('TULEEKO setAccessTokeniin', accessToken);
         const newAccessToken = accessToken;
 
         await AsyncStorage.setItem(
@@ -28,7 +28,7 @@ class AuthStorage {
 
     async removeAccessToken() {
         // Remove the access token from the storage
-        console.log('TULEEKO removeAccessTokeniin');
+        //console.log('TULEEKO removeAccessTokeniin');
         await AsyncStorage.removeItem(`${this.namespace}:accessToken`);
     }
 

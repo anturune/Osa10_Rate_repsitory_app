@@ -69,6 +69,7 @@ const AppBar = () => {
         <View style={styles.container}>
             <ScrollView horizontal={true}>
                 <AppBarTab buttonName="SignIn" linkTo="/signIn" />
+                <AppBarTab buttonName="SignUp" linkTo="/signUp" />
                 <AppBarTab buttonName="Repositories" linkTo="/" />
             </ScrollView>
         </View>

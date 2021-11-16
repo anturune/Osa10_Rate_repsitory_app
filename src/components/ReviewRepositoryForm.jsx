@@ -88,21 +88,7 @@ const ReviewForm = ({ onSubmit }) => {
 
 
 const ReviewRepo = () => {
-
-    console.log('KUTSUUKO onSubmitia ReviewRepo');
-    /*
-    let history = useHistory();
-    const { id } = useParams();
-    //const onSubmit = (values) => {
-    console.log('KUTSUUKO onSubmitia');
-
-    const [signIn] = useSignIn();
-
-    //console.log('KUTSUUKO onSubmitia');
-*/
-
     //En saanut hookia toimimaan niin siksi graphQL haku suoraan tästä komponentista
-    //const { id } = useParams();
     const [createReview] = useMutation(CREATE_REVIEW_MUTATION);
     let history = useHistory();
 
@@ -135,7 +121,7 @@ const ReviewRepo = () => {
                     ]}>Loading...</Text>
                 </View>);
         }
-        console.log('REVIEW DATA', data.createReview.repositoryId);
+        //console.log('REVIEW DATA', data.createReview.repositoryId);
         history.push(`/singleRepsoitory/${data.createReview.repositoryId}`);
     };
 

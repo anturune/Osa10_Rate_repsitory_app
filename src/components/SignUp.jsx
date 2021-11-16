@@ -3,8 +3,10 @@ import { Text, Pressable, View, StyleSheet } from 'react-native';
 import { Formik } from 'formik';
 import FormikTextInput from './FormikTextInput';
 import * as yup from 'yup';
-import useSignIn from '../hooks/useSignIn';
 import { useHistory } from "react-router-native";
+import { CREATE_NEW_USER_MUTATION } from '../graphql/mutations';
+import { useMutation } from '@apollo/client';
+import useSignIn from '../hooks/useSignIn';
 
 
 //Statistiikan tyylit
@@ -52,27 +54,39 @@ const signInStyles = StyleSheet.create({
 const initialValues = {
     username: '',
     password: '',
+    passwordConfirmation: ''
 };
 
 const validationSchema = yup.object().shape({
     username: yup
         .string()
+        .min(1)
+        .max(30)
         .required('Username is required'),
     password: yup
         .string()
+        .min(5)
+        .max(50)
         .required('Password is required'),
+    passwordConfirmation: yup
+        .string()
+        .min(5)
+        .max(50)
+        .oneOf([yup.ref('password'), null])
+        .required('Password confirmation required'),
 });
 
-const SignInForm = ({ onSubmit }) => {
+const SignUpForm = ({ onSubmit }) => {
     return (
         <View style={signInStyles.container}>
             <FormikTextInput name="username" placeholder="Username" style={[signInStyles.loginText, signInStyles.loginTab]} />
             <FormikTextInput name="password" placeholder="Password" style={[signInStyles.loginText, signInStyles.loginTab]} />
+            <FormikTextInput name="passwordConfirmation" placeholder="Password confirmation" style={[signInStyles.loginText, signInStyles.loginTab]} />
             <Pressable onPress={onSubmit}>
                 <Text style={
                     [signInStyles.signInTab,
                     signInStyles.text
-                    ]}>Sign in</Text>
+                    ]}>Sign Up</Text>
             </Pressable>
         </View>
     );
@@ -80,26 +94,47 @@ const SignInForm = ({ onSubmit }) => {
 
 
 
-const SignIn = () => {
-    let history = useHistory();
-    //const onSubmit = (values) => {
-    //console.log('KUTSUUKO onSubmitia');
+const SignUp = () => {
+    console.log('KUTSUUKO onSubmitia SignUp');
 
+    const [createNewUser] = useMutation(CREATE_NEW_USER_MUTATION);
+    let history = useHistory();
     const [signIn] = useSignIn();
 
-    //console.log('KUTSUUKO onSubmitia');
-
     const onSubmit = async (values) => {
-
-        //console.log('KUTSUUKO onSubmitia', values);
+        //ks. kenttiin täytettävät tiedot "__tests__/components/RepositoryList.js"
         const { username, password } = values;
-        //console.log('SIGNIN COMPONENT', username, 'JA', password);
         try {
-            //console.log('tuleeko tryihin DATAAA');
-            const { data } = await signIn({ username, password });
-            //console.log('DATAAA', data.authorize.accessToken);
-            history.push("/");
+            //variaabeleihin "username" ja "password" ja kentät nimettävä samalla tavalla kuin "graphql":ssä
+            const { data, loading } = await createNewUser({ variables: { user: { username, password } } });
+            if (loading) {
+                return (
+                    <View style={
+                        [
+                            {
+                                width: '100%',
+                                height: '100%',
+                                //backgroundColor: 'blue',
+                                alignItems: 'center',
+                                justifyContent: 'center'
 
+
+                            },
+                        ]}>
+                        <Text style={[
+                            {
+                                fontSize: 30,
+                                color: 'black',
+                            }
+
+                        ]}>Loading...</Text>
+                    </View>);
+            }
+            console.log('SignUp.jsx data', data);
+            //Loggaudutaan sisään, kun uusi käyttäjä luotu
+            const { error } = await signIn({ username, password });
+            //Kun uusi käyttäjä luotu, ohjataa repsoitory listaan
+            history.push("/");
         } catch (e) {
             console.log('DATAAA Errorista');
             console.log(e);
@@ -112,8 +147,8 @@ const SignIn = () => {
             onSubmit={onSubmit}
             validationSchema={validationSchema}
         >
-            {({ handleSubmit }) => <SignInForm onSubmit={handleSubmit} />}
+            {({ handleSubmit }) => <SignUpForm onSubmit={handleSubmit} />}
         </Formik>
     );
 };
-export default SignIn;
+export default SignUp;

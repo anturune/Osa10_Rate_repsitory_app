@@ -1,5 +1,5 @@
 import React from 'react';
-import { FlatList, View, StyleSheet } from 'react-native';
+import { FlatList, View, StyleSheet, Text } from 'react-native';
 import RenderItem from './RepositoryItem';
 import useRepositories from '../hooks/useRepositories';
 
@@ -9,6 +9,19 @@ const styles = StyleSheet.create({
         height: 10,
         backgroundColor: 'lightgrey',
     },
+    wrapperCustom: {
+        borderRadius: 0,
+        //padding: 20,
+        backgroundColor: 'lightgrey'
+    },
+    text: {
+        fontSize: 25,
+        color: 'white',
+        paddingTop: 40,
+        paddingRight: 20,
+        paddingBottom: 20,
+        textAlign:'center'
+    }
 
 });
 /*
@@ -62,7 +75,11 @@ const repositories = [
 
 
 
-
+const OredrRepositories = ({ repository }) => {
+    // Repository's information implemented in the previous exercise
+    console.log('OredrRepositories', repository);
+    return <View style={styles.wrapperCustom}><Text style={styles.text}>Jothain</Text></View>;
+};
 
 
 export const RepositoryListContainer = ({ repositories }) => {
@@ -77,6 +94,7 @@ export const RepositoryListContainer = ({ repositories }) => {
             data={repositoryNodes}
             ItemSeparatorComponent={ItemSeparator}
             renderItem={RenderItem}
+            ListHeaderComponent={() => <OredrRepositories repository='moro' />}
             keyExtractor={(item, index) => index.toString()}
         />
 

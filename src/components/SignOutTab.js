@@ -1,13 +1,6 @@
 import React from 'react';
 import { Pressable, StyleSheet, Text, } from 'react-native';
-import theme from '../theme';
-//import AppBar from '.AppBar';
-import Constants from 'expo-constants';
-import useAuthStorage from '../hooks/useAuthStorage';
-import { useApolloClient } from '@apollo/client';
 import { useHistory } from "react-router-native";
-import { GET_LOGGED_IN_USER } from '../graphql/queries';
-import { useQuery } from '@apollo/client';
 import useSignOut from '../hooks/useSignOut';
 
 
@@ -35,12 +28,12 @@ const SignOutTab = () => {
     const [signOut] = useSignOut();
 
     const onSubmit = async () => {
-        console.log('YRITTÄÄKÖ TÄNNE');
+        //console.log('YRITTÄÄKÖ TÄNNE');
 
         try {
             const { data } = await signOut();
 
-            console.log('SignOutTab', data);
+            //console.log('SignOutTab', data);
             //Palataan signOutin jälkeen sigIn sivulle
             history.push("/signIn");
 

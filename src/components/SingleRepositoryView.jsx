@@ -151,7 +151,7 @@ const SingleRepositorio = () => {
         ? data.repository.reviews.edges.map((edge) => edge.node)
         : [];
 
-    console.log('Data', data.repository.reviews.edges);
+    //console.log('Data', data.repository.reviews.edges);
     //console.log('Reviews', reviews);
 
     return (

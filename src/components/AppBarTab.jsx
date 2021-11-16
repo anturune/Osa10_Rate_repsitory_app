@@ -1,5 +1,5 @@
 import React from 'react';
-import { Pressable, StyleSheet, Alert, Text, View } from 'react-native';
+import { StyleSheet, Text } from 'react-native';
 import theme from '../theme';
 //import AppBar from '.AppBar';
 import Constants from 'expo-constants';
@@ -23,9 +23,9 @@ const styles = StyleSheet.create({
     text: {
         fontSize: 25,
         color: 'white',
-        paddingTop:40,
-        paddingRight:20,
-        paddingBottom:20
+        paddingTop: 40,
+        paddingRight: 20,
+        paddingBottom: 20
     },
     buttonColor: {
         color: theme.colors.backgroundColor
@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
 });
 
 const AppBarTab = ({ buttonName, linkTo }) => {
-    console.log('LINKTO', linkTo);
+    //console.log('LINKTO', linkTo);
     return (
         <Link to={`${linkTo}`}>
             <Text style={[
