@@ -16,12 +16,15 @@ const styles = StyleSheet.create({
 
     wrapperCustom: {
         borderRadius: 0,
-        padding: 20,
+        //padding: 20,
         backgroundColor: '#24292e'
     },
     text: {
-        fontSize: 30,
-        color: 'white'
+        fontSize: 25,
+        color: 'white',
+        paddingTop:40,
+        paddingRight:20,
+        paddingBottom:20
     }
 
 });

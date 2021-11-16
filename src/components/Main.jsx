@@ -13,6 +13,7 @@ import { Route, Switch, Redirect } from 'react-router-native';
 import SignIn from './SignIn';
 import SignOutTab from './SignOutTab';
 import SingleRepository from './SingleRepositoryView';
+import ReviewRepo from './ReviewRepositoryForm';
 
 
 
@@ -46,6 +47,9 @@ const Main = () => {
                 </Route>
                 <Route path="/singleRepsoitory/:id">
                     <SingleRepository />
+                </Route>
+                <Route path="/reviewRepo">
+                    <ReviewRepo />
                 </Route>
                 <Route path="/" exact>
                     <RepositoryList />

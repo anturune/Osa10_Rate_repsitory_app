@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
     },
     loginText: {
-        fontSize: 30,
+        fontSize: 20,
         color: 'black',
         textAlign: 'left'
     }
@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
 
 const TextInput = ({ style, error, ...props }) => {
     const textInputStyle = [style];
-    //console.log('Error message TextInput', error);
+    //console.log('Error message TextInput');
     //Jos virheellinen sisältö login fieldeille, renderöidään puniset reunat
     if (error) {
         return <NativeTextInput style={[styles.loginText, styles.loginTab]} {...props} />;

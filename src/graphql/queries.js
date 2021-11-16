@@ -45,6 +45,40 @@ query repository($id:ID!){
        ratingAverage
        reviewCount
        ownerAvatarUrl
+       reviews{
+        edges{
+          node{
+            id
+            text
+            rating
+            createdAt
+            user{
+              id
+            	username}
+          }
+      }
+   }
+ }
+}
+ `;
+
+
+/*
+export const GET_SINGLE_REPO = gql`
+query repository($id:ID!){
+  repository(id:$id) 
+     {
+       id
+       fullName
+       url
+       description
+       language
+       forksCount
+       stargazersCount
+       ratingAverage
+       reviewCount
+       ownerAvatarUrl
    }
  }
  `;
+ */

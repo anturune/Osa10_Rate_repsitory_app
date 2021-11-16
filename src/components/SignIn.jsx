@@ -83,7 +83,7 @@ const SignInForm = ({ onSubmit }) => {
 const SignIn = () => {
     let history = useHistory();
     //const onSubmit = (values) => {
-    console.log('KUTSUUKO onSubmitia');
+    //console.log('KUTSUUKO onSubmitia');
 
     const [signIn] = useSignIn();
     
@@ -91,7 +91,7 @@ const SignIn = () => {
 
     const onSubmit = async (values) => {
         
-        //console.log('KUTSUUKO onSubmitia',values);
+        console.log('KUTSUUKO onSubmitia',values);
         const { username, password } = values;
         //console.log('SIGNIN COMPONENT', username, 'JA', password);
         try {

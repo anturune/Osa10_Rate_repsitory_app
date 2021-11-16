@@ -3,6 +3,7 @@ import { View, StyleSheet, ScrollView, Text } from 'react-native';
 //import Constants from 'expo-constants';
 import AppBarTab from './AppBarTab';
 import SignOutTab from './SignOutTab';
+
 //import { Link } from "react-router-native";
 //import theme from '../theme';
 import { GET_LOGGED_IN_USER } from '../graphql/queries';
@@ -57,6 +58,7 @@ const AppBar = () => {
             <View style={styles.container}>
                 <ScrollView horizontal={true}>
                     <SignOutTab />
+                    <AppBarTab buttonName="Create a review" linkTo="/reviewRepo" />
                     <AppBarTab buttonName="Repositories" linkTo="/" />
                 </ScrollView>
             </View>
