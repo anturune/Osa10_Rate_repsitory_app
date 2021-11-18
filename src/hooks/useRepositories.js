@@ -10,16 +10,20 @@ const useRepositories = () => {
   //Initial state
   const [filterCriteria, setFilterCriteria] = useState({
     orderDirection: "DESC",
-    orderBy: "CREATED_AT"
+    orderBy: "CREATED_AT",
+    searchKeyword: ""
   });
 
-  const { orderDirection, orderBy } = filterCriteria;
+  //"pilkotaan" filterCrietria -state osiin
+  const { orderDirection, orderBy, searchKeyword } = filterCriteria;
 
+  //console.log('Mita tulee hookiin', orderDirection, orderBy, searchKeyword);
+
+  //GraphQL haun ajo
   const { data, error, loading } = useQuery(GET_REPOSITORIES,
     {
       fetchPolicy: 'cache-and-network',
-      variables: { orderDirection: orderDirection, orderBy: orderBy }
-      // Other options
+      variables: { orderDirection: orderDirection, orderBy: orderBy, searchKeyword: searchKeyword }
     });
 
   //console.log('TULEEKO UseRepositoriesiin', data);
@@ -33,8 +37,6 @@ const useRepositories = () => {
   if (error) {
     return error;
   }
-
-  //console.log('DATA HOOKISSA', data.repositories);
 
   return {
     repositories: data.repositories,
