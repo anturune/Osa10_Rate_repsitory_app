@@ -1,13 +1,18 @@
-import React from 'react';
+//import * as React from 'react';
+import React, { useState } from 'react'
 import { FlatList, View, StyleSheet, Text } from 'react-native';
 import RenderItem from './RepositoryItem';
 import useRepositories from '../hooks/useRepositories';
+import { Button, Menu, Divider, Provider } from 'react-native-paper';
+import { Picker } from '@react-native-picker/picker';
+import { GET_REPOSITORIES } from '../graphql/queries';
+import { useQuery } from '@apollo/client';
 
 
 const styles = StyleSheet.create({
     separator: {
         height: 10,
-        backgroundColor: 'lightgrey',
+        backgroundColor: 'lightgrey'
     },
     wrapperCustom: {
         borderRadius: 0,
@@ -16,74 +21,92 @@ const styles = StyleSheet.create({
     },
     text: {
         fontSize: 25,
-        color: 'white',
+        color: 'black',
         paddingTop: 40,
         paddingRight: 20,
         paddingBottom: 20,
-        textAlign:'center'
+        textAlign: 'center'
     }
 
 });
-/*
-const repositories = [
-    {
-        id: 'jaredpalmer.formik',
-        fullName: 'jaredpalmer/formik',
-        description: 'Build forms in React, without the tears',
-        language: 'TypeScript',
-        forksCount: 1589,
-        stargazersCount: 21553,
-        ratingAverage: 88,
-        reviewCount: 4,
-        ownerAvatarUrl: 'https://avatars2.githubusercontent.com/u/4060187?v=4',
-    },
-    {
-        id: 'rails.rails',
-        fullName: 'rails/rails',
-        description: 'Ruby on Rails',
-        language: 'Ruby',
-        forksCount: 18349,
-        stargazersCount: 45377,
-        ratingAverage: 100,
-        reviewCount: 2,
-        ownerAvatarUrl: 'https://avatars1.githubusercontent.com/u/4223?v=4',
-    },
-    {
-        id: 'django.django',
-        fullName: 'django/django',
-        description: 'The Web framework for perfectionists with deadlines.',
-        language: 'Python',
-        forksCount: 21015,
-        stargazersCount: 48496,
-        ratingAverage: 73,
-        reviewCount: 5,
-        ownerAvatarUrl: 'https://avatars2.githubusercontent.com/u/27804?v=4',
-    },
-    {
-        id: 'reduxjs.redux',
-        fullName: 'reduxjs/redux',
-        description: 'Predictable state container for JavaScript apps',
-        language: 'TypeScript',
-        forksCount: 13902,
-        stargazersCount: 52869,
-        ratingAverage: 0,
-        reviewCount: 0,
-        ownerAvatarUrl: 'https://avatars3.githubusercontent.com/u/13142323?v=4',
-    },
-];
-*/
 
 
 
-const OredrRepositories = ({ repository }) => {
+//"Menu" -komponentin asennus "npm install react-native-paper"
+const OredrRepositories = ({ setFilterCriteria }) => {
+
+    //console.log('OredrRepositories', setFilterCriteria);
+
+    //HUOM! Muutetaan Json muotoon value sekä parseroidaan vielä "onValueChange":ssa
+    return (
+        <View style={{ backgroundColor: 'lavender', padding: 20 }}>
+            <Picker
+                selectedValue={setFilterCriteria}
+                onValueChange={(itemValue, itemIndex) =>
+                    setFilterCriteria(JSON.parse(itemValue))
+                }>
+
+                <Picker.Item label="Select an item..."
+                    title="Item 2"
+                    style={{ color: 'grey' }} />
+
+                <Picker.Item label="Latest repos" value={JSON.stringify({
+                    orderDirection: "DESC",
+                    orderBy: "CREATED_AT"
+                })} title="Item 1" />
+
+                <Picker.Item label="Highest rated" value={JSON.stringify({
+                    orderDirection: "DESC",
+                    orderBy: "RATING_AVERAGE"
+                })} title="Item 1" />
+
+                <Picker.Item label="Lowest rated"
+                    value={JSON.stringify({
+                        orderDirection: "ASC",
+                        orderBy: "RATING_AVERAGE"
+                    })}
+                    title="Item 3" />
+            </Picker>
+        </View>);
+
+    /*
     // Repository's information implemented in the previous exercise
     console.log('OredrRepositories', repository);
-    return <View style={styles.wrapperCustom}><Text style={styles.text}>Jothain</Text></View>;
+    const [visible, setVisible] = React.useState(false);
+
+    const openMenu = () => setVisible(true);
+
+    const closeMenu = () => setVisible(false);
+
+    return (
+        <Provider>
+            <View
+                style={{
+                    paddingTop: 50,
+                    flexDirection: 'row',
+                    justifyContent: 'center',
+                    zIndex: 99,
+                    backgroundColor: 'grey'
+
+                }}>
+                <Menu
+                    visible={visible}
+                    onDismiss={closeMenu}
+                    anchor={<Button onPress={openMenu}>Show menu</Button>}>
+                    <Menu.Item onPress={() => { }} title="Item 1" />
+                    <Menu.Item onPress={() => { }} title="Item 2" />
+                    <Divider />
+                    <Menu.Item onPress={() => { }} title="Item 3" />
+                </Menu>
+            </View>
+        </Provider>
+    );
+    */
 };
 
 
-export const RepositoryListContainer = ({ repositories }) => {
-    //console.log('TULEEKO REPOSITORYLISTCONTAINERIIN');
+export const RepositoryListContainer = ({ repositories, setFilterCriteria }) => {
+    //console.log('TULEEKO REPOSITORYLISTCONTAINERIIN', setFilterCriteria);
     const repositoryNodes = repositories
         ? repositories.edges.map((edge) => edge.node)
         : [];
@@ -94,8 +117,8 @@ export const RepositoryListContainer = ({ repositories }) => {
             data={repositoryNodes}
             ItemSeparatorComponent={ItemSeparator}
             renderItem={RenderItem}
-            ListHeaderComponent={() => <OredrRepositories repository='moro' />}
             keyExtractor={(item, index) => index.toString()}
+            ListHeaderComponent={() => <OredrRepositories setFilterCriteria={setFilterCriteria} />}
         />
 
     );
@@ -104,9 +127,45 @@ export const RepositoryListContainer = ({ repositories }) => {
 const ItemSeparator = () => <View style={styles.separator} />;
 
 const RepositoryList = () => {
-    const { repositories } = useRepositories();
+
+
+    const { repositories, loading, setFilterCriteria } = useRepositories();
+
+    if (loading) {
+        console.log('TULEEKO LOADINGIIN',loading);
+        return (
+            <View style={
+                [
+                    {
+                        width: '100%',
+                        height: '100%',
+                        //backgroundColor: 'blue',
+                        alignItems: 'center',
+                        justifyContent: 'center'
+
+
+                    },
+                ]}>
+                <Text style={[
+                    {
+                        fontSize: 30,
+                        color: 'black',
+                    }
+
+                ]}>Loading...</Text>
+            </View>);
+    }
+    
+    console.log('REPOLIST', loading);
+
     // Get the nodes from the edges array
-    return <RepositoryListContainer repositories={repositories} />;
+    //Viedään "setFilterCriteria" ns. functiona eteenpäin, ensin propseina
+    //"RepositoryListContainer":lle ja sitten vielä "OredrRepositories":lle, jossa
+    //varsinainen state muutokset annetaan ja hook:ssa muutetaan
+    return <RepositoryListContainer
+        setFilterCriteria={setFilterCriteria}
+        repositories={repositories}
+        contentStyle={{ zIndex: 0 }} />;
 };
 
 

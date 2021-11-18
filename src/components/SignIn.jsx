@@ -83,7 +83,7 @@ const SignInForm = ({ onSubmit }) => {
 const SignIn = () => {
     let history = useHistory();
     //const onSubmit = (values) => {
-    //console.log('KUTSUUKO onSubmitia');
+    console.log('KUTSUUKO onSubmitia');
 
     const [signIn] = useSignIn();
 

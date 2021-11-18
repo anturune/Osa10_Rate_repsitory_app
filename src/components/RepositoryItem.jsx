@@ -46,7 +46,7 @@ const repositoryHeaderStyles = StyleSheet.create({
     container: {
         paddingTop: Constants.statusBarHeight,
         flexDirection: 'row',
-        flexGrow: 1,
+        flexGrow: 1
     },
     avatar: {
         width: 50,
@@ -74,7 +74,7 @@ const repositoryHeaderStyles = StyleSheet.create({
         //Saadaan tekstin ympärillä olevan boxin koko
         //sovitettua tekstin määrän mukaiseksi
         alignSelf: "flex-start",
-        width: "auto",
+        width: "auto"
     },
     whiteTextForLanguageTag: {
         fontSize: 16,
@@ -88,7 +88,7 @@ const repositoryHeaderStyles = StyleSheet.create({
         //alignSelf: "stretch",
         width: "auto",
         textAlign: "center",
-        paddingVertical: 15,
+        paddingVertical: 15
 
     }
 });
@@ -126,7 +126,8 @@ const RepositoryHeader = ({ item }) => {
                 <View style={repositoryHeaderStyles.languageTagContainer}>
                     <Text testID="languageTagTest" style={[
                         repositoryHeaderStyles.languageTag,
-                        repositoryHeaderStyles.whiteTextForLanguageTag]}> {item.language}</Text>
+                        repositoryHeaderStyles.whiteTextForLanguageTag,
+                    ]}> {item.language}</Text>
                 </View>
             </View>
 
@@ -141,13 +142,14 @@ const repositoryBodyStyles = StyleSheet.create({
         //Latoo kaikki itemit rinnakkain
         flexDirection: 'row',
         flexGrow: 1,
-        //marginLeft: 20,
+
     },
     statisticsContainer: {
         //Latoo kaikki itemit päällekäin
         flexDirection: 'column',
         flexGrow: 1,
         alignItems: 'center',
+        zIndex: 1
 
     },
     infoContainer: {
@@ -167,8 +169,8 @@ const RepositoryBody = ({ item, linkToRepo }) => {
     //console.log('ITEM', item);
     //console.log('RepositoryBody', linkToRepo);
     return (
-        <View>
-            <View style={repositoryBodyStyles.container}>
+        <View >
+            <View style={[repositoryBodyStyles.container]}>
                 <View style={repositoryBodyStyles.statisticsContainer} >
                     <Text testID="starsTestValue" fontWeight="bold" fontSize="primary">  {yksikonMuunnos(item.stargazersCount)} </Text>
                     <Text testID="starsTest" color='textSecondary' fontSize="body">Stars</Text>

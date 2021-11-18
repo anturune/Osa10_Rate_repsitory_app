@@ -1,15 +1,24 @@
 //import { useState, useEffect } from 'react';
 import { GET_REPOSITORIES } from '../graphql/queries';
 import { useQuery } from '@apollo/client';
-
-
+import { useState } from 'react';
 
 
 const useRepositories = () => {
 
+
+  //Initial state
+  const [filterCriteria, setFilterCriteria] = useState({
+    orderDirection: "DESC",
+    orderBy: "CREATED_AT"
+  });
+
+  const { orderDirection, orderBy } = filterCriteria;
+
   const { data, error, loading } = useQuery(GET_REPOSITORIES,
     {
       fetchPolicy: 'cache-and-network',
+      variables: { orderDirection: orderDirection, orderBy: orderBy }
       // Other options
     });
 
@@ -24,16 +33,21 @@ const useRepositories = () => {
   if (error) {
     return error;
   }
-  
-  return data;
+
+  //console.log('DATA HOOKISSA', data.repositories);
+
+  return {
+    repositories: data.repositories,
+    setFilterCriteria,
+    loading
+  };
 
   //return { repositories, loading, refetch: fetchRepositories };
 };
 
 export default useRepositories;
 
-
-/* 
+/*
   const [repositories, setRepositories] = useState();
   const [loading, setLoading] = useState(false);
   console.log('TULEEKO UseRepositoriesiin', repositories);

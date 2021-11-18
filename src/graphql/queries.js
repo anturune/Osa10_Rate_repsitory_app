@@ -1,6 +1,6 @@
 import { gql } from '@apollo/client';
 
-
+/*
 export const GET_REPOSITORIES = gql`
   query {
     repositories {
@@ -20,7 +20,26 @@ export const GET_REPOSITORIES = gql`
         }
     }
 `;
-
+*/
+export const GET_REPOSITORIES = gql`
+query repositories($orderDirection:OrderDirection,$orderBy:AllRepositoriesOrderBy,$searchKeyword: String){
+  repositories (orderDirection:$orderDirection,orderBy:$orderBy, searchKeyword:$searchKeyword){
+  edges{
+            node{
+              id
+            fullName
+            description
+            language
+            forksCount
+            stargazersCount
+            ratingAverage
+            reviewCount
+            ownerAvatarUrl}
+          }
+          totalCount
+        }
+  }
+`;
 
 export const GET_LOGGED_IN_USER = gql`
 query {authorizedUser
