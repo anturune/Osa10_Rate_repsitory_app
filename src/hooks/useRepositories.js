@@ -22,26 +22,18 @@ const useRepositories = () => {
   //GraphQL haun ajo
   const { data, error, loading } = useQuery(GET_REPOSITORIES,
     {
-      fetchPolicy: 'cache-and-network',
+      //Ks. cache policy "utils/apolloClient.js", aktivoi toinen custom cache
+      //kun kokeilet "reviewes":ien lataamisoptiota...ks. "SingleRepositoryView.jsx" ja
+      //katso "fetch" -kohta. Toimiakseen vaatii custom cachen, joka ei taas toimi tässä
+      fetchPolicy: 'cache',
       variables: { orderDirection: orderDirection, orderBy: orderBy, searchKeyword: searchKeyword }
     });
 
-  //console.log('TULEEKO UseRepositoriesiin', data);
-  //console.log('TULEEKO UseRepositoriesiinError', error);
-  //console.log('TULEEKO UseRepositoriesiinLoading', loading);
-
-  if (loading) {
-    return loading;
-  }
-
-  if (error) {
-    return error;
-  }
-
   return {
-    repositories: data.repositories,
+    repositories: data?.repositories,
     setFilterCriteria,
-    loading
+    loading,
+
   };
 
   //return { repositories, loading, refetch: fetchRepositories };

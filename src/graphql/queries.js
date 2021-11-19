@@ -51,8 +51,46 @@ query {authorizedUser
 `;
 
 export const GET_SINGLE_REPO = gql`
-query repository($id:ID!){
+query repository($id:ID!,$first:Int, $after:String){
   repository(id:$id) 
+     {
+       id
+       fullName
+       url
+       description
+       language
+       forksCount
+       stargazersCount
+       ratingAverage
+       reviewCount
+       ownerAvatarUrl
+       reviews(first:$first, after:$after){
+        edges{
+          cursor
+          node{
+            id
+            text
+            rating
+            createdAt
+            repositoryId
+            user{
+              id
+            	username}
+          }
+      }
+        pageInfo{
+           endCursor
+           startCursor
+           hasNextPage}
+   }
+ }
+}
+ `;
+
+/*
+export const GET_SINGLE_REPO = gql`
+query repository($id:ID!){
+  repository(id:$id)
      {
        id
        fullName
@@ -73,19 +111,19 @@ query repository($id:ID!){
             createdAt
             user{
               id
-            	username}
+              username}
           }
       }
    }
  }
 }
  `;
-
+*/
 
 /*
 export const GET_SINGLE_REPO = gql`
 query repository($id:ID!){
-  repository(id:$id) 
+  repository(id:$id)
      {
        id
        fullName

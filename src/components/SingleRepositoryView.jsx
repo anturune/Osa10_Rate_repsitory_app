@@ -117,9 +117,11 @@ const RepositoryInfo = ({ repository }) => {
 const SingleRepositorio = () => {
     //En saanut hookia toimimaan niin siksi graphQL haku suoraan tästä komponentista
     const { id } = useParams();
-    const { loading, data } = useQuery(GET_SINGLE_REPO, {
-        fetchPolicy: "cache-and-network",
-        variables: { id },
+    const { loading, data, fetchMore } = useQuery(GET_SINGLE_REPO, {
+        fetchPolicy: "cache",
+        //Ladataan haluttu määrä rviewejä--> määritys "first:"-argumenttiin ja alla määritelty, 
+        //että kun puolet näkyy, niin ladataan yksi lisää yhden ladatun lisäksi
+        variables: { id, first: 2 },
     });
 
     if (loading) {
@@ -145,6 +147,25 @@ const SingleRepositorio = () => {
                 ]}>Loading...</Text>
             </View>);
     }
+    console.log('DATA', data.repository.reviews.edges.length);
+    const handleFetchMore = () => {
+        console.log('You have reached the end of the list');
+        //console.log('Tuleeko handleFetchMoreen', handleFetchMore);
+        const canFetchMore = !loading && data?.repository.reviews.pageInfo.hasNextPage;
+        //console.log('TULEEKO handleFetchMoreen', canFetchMore, 'jaLoadaan', loading);
+        if (!canFetchMore) {
+            //console.log('Eikö ole cnafetcmorea', canFetchMore);
+            return;
+        }
+        //Määritetään, montako reviewiä ladataan kun puolet näkyy näytöllä
+        fetchMore({
+            variables: {
+                after: data.repository.reviews.pageInfo.endCursor,
+                first: 1
+            },
+        });
+    };
+
 
     //Mapataan revjyyt taulukkoon <FlatList> -varten
     const reviews = data.repository.reviews
@@ -161,6 +182,9 @@ const SingleRepositorio = () => {
             keyExtractor={({ id }) => id}
             ListHeaderComponent={() => <RepositoryInfo repository={data.repository} />}
             ItemSeparatorComponent={ItemSeparator}
+            onEndReached={handleFetchMore}
+            //tällä arvolla määritellään milloin ladataan näytölle lisää reviewejä
+            onEndReachedThreshold={0.5}
         // ...
         />
     );

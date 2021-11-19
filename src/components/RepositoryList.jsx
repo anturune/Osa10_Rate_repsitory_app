@@ -42,7 +42,7 @@ const OredrRepositories = ({ setFilterCriteria }) => {
 
     //HUOM! Muutetaan Json muotoon value sekä parseroidaan vielä "onValueChange":ssa
     return (
-        <View style={{ backgroundColor: 'white', padding: 20, borderWidth: 2, borderColor: 'black', borderRadius: 5, margin:20 }}>
+        <View style={{ backgroundColor: 'white', padding: 20, borderWidth: 2, borderColor: 'black', borderRadius: 5, margin: 20 }}>
             <Picker
                 selectedValue={setFilterCriteria}
                 onValueChange={(itemValue, itemIndex) =>
@@ -125,16 +125,17 @@ const FilteringFieldUsingUseEffectHook = ({ setFilterCriteria }) => {
     //setFilterCriteria(filterCriteria);
     const onChangeSearch = query => setSearchQuery(query);
 
-
-    useEffect(() => {
-        let filterCriteriaJson = JSON.stringify({
-            searchKeyword: filterCriteria
-        });
-        let parseJson = JSON.parse(filterCriteriaJson);
-        console.log('Tuleeko setfiltercriteriaan', filterCriteriaJson, parseJson);
-        //setFilterCriteria(parseJson);
-    }, [filterCriteria]);
-
+    /*
+        useEffect(() => {
+            let filterCriteriaJson = JSON.stringify({
+                searchKeyword: filterCriteria
+            });
+            let parseJson = JSON.parse(filterCriteriaJson);
+            //console.log('Tuleeko setfiltercriteriaan', filterCriteriaJson, parseJson);
+            console.log('AJO');
+            setFilterCriteria(parseJson);
+        }, [filterCriteria]);
+    */
     return (
         <View style={{ padding: 20 }}>
             <Searchbar
@@ -198,7 +199,6 @@ export class RepositoryListContainer extends React.Component {
             <View style={{ backgroundColor: 'darkgrey' }}>
                 <FilteringField setFilterCriteria={setFilterCriteria} />
                 <OredrRepositories setFilterCriteria={setFilterCriteria} />
-                <FilteringFieldUsingUseEffectHook setFilterCriteria={setFilterCriteria} />
             </View>
         );
     };
@@ -206,6 +206,7 @@ export class RepositoryListContainer extends React.Component {
     render() {
         //map metodi siirrettävä tänne, jotta saadaan toimimaan
         //Otetaan propseista "repositories" talteen
+
         const { repositories } = this.props;
         const repositoryNodes = repositories
             ? repositories.edges.map((edge) => edge.node)
@@ -217,7 +218,6 @@ export class RepositoryListContainer extends React.Component {
                 renderItem={RenderItem}
                 keyExtractor={(item, index) => index.toString()}
                 ListHeaderComponent={this.renderHeader}
-
             />
 
         );
@@ -227,8 +227,8 @@ export class RepositoryListContainer extends React.Component {
 const ItemSeparator = () => <View style={styles.separator} />;
 
 const RepositoryList = () => {
-    const { repositories, loading, setFilterCriteria } = useRepositories();
 
+    const { repositories, loading, setFilterCriteria } = useRepositories();
     if (loading) {
         console.log('TULEEKO LOADINGIIN', loading);
         return (
@@ -254,7 +254,6 @@ const RepositoryList = () => {
             </View>);
     }
 
-    console.log('REPOLIST', setFilterCriteria);
 
     // Get the nodes from the edges array
     //Viedään "setFilterCriteria" ns. functiona eteenpäin, ensin propseina
@@ -263,7 +262,8 @@ const RepositoryList = () => {
     return <RepositoryListContainer
         setFilterCriteria={setFilterCriteria}
         repositories={repositories}
-        contentStyle={{ zIndex: 0 }} />;
+        contentStyle={{ zIndex: 0 }}
+    />;
 };
 
 
