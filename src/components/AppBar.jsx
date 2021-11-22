@@ -9,8 +9,6 @@ import SignOutTab from './SignOutTab';
 import { GET_LOGGED_IN_USER } from '../graphql/queries';
 import { useQuery } from '@apollo/client';
 
-
-
 const styles = StyleSheet.create({
     container: {
         //paddingTop: Constants.statusBarHeight,
@@ -59,6 +57,7 @@ const AppBar = () => {
                 <ScrollView horizontal={true}>
                     <SignOutTab />
                     <AppBarTab buttonName="Create a review" linkTo="/reviewRepo" />
+                    <AppBarTab buttonName="My Reviews" linkTo="/myReviews" />
                     <AppBarTab buttonName="Repositories" linkTo="/" />
                 </ScrollView>
             </View>

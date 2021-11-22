@@ -50,6 +50,38 @@ query {authorizedUser
 }
 `;
 
+export const GET_AUTHORIZED_USER_REPOS = gql`
+query getAuthorizedUser($includeReviews: Boolean = false) {
+    authorizedUser {
+      id
+      username
+      reviews @include(if: $includeReviews) {
+        edges {
+          node {
+            id
+            user{
+              username}
+              repositoryId
+            rating
+            createdAt
+            text
+            repository{
+              id 
+              fullName}
+          }
+          cursor
+        }
+        pageInfo {
+          hasNextPage
+          hasPreviousPage
+          startCursor
+          endCursor
+        }
+      }
+    }
+  }
+`;
+
 export const GET_SINGLE_REPO = gql`
 query repository($id:ID!,$first:Int, $after:String){
   repository(id:$id) 

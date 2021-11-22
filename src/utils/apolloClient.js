@@ -47,8 +47,8 @@ const createApolloClient = (authStorage) => {
     //Aktivoi tämä cache, jos haluat filteröinnin toimivan
     //"RepositoryList":lle ei ole tehty "infinite scrollingia", jota
     //varten custom cache tehty
-    //cache: new InMemoryCache(),
-    cache,
+    cache: new InMemoryCache(),
+    //cache,
   });
 };
 

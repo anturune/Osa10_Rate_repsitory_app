@@ -230,7 +230,7 @@ const RepositoryList = () => {
 
     const { repositories, loading, setFilterCriteria } = useRepositories();
     if (loading) {
-        console.log('TULEEKO LOADINGIIN', loading);
+        //console.log('TULEEKO LOADINGIIN', loading);
         return (
             <View style={
                 [
@@ -254,6 +254,7 @@ const RepositoryList = () => {
             </View>);
     }
 
+    //console.log('REPOLIST',repositories);
 
     // Get the nodes from the edges array
     //Viedään "setFilterCriteria" ns. functiona eteenpäin, ensin propseina

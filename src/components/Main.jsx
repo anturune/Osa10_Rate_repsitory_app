@@ -15,6 +15,7 @@ import SignOutTab from './SignOutTab';
 import SingleRepository from './SingleRepositoryView';
 import ReviewRepo from './ReviewRepositoryForm';
 import SignUp from './SignUp';
+import AuthorizedUserReviews from './AuthorizedUserReviews';
 
 
 
@@ -51,6 +52,9 @@ const Main = () => {
                 </Route>
                 <Route path="/reviewRepo">
                     <ReviewRepo />
+                </Route>
+                <Route path="/myReviews">
+                    <AuthorizedUserReviews />
                 </Route>
                 <Route path="/signUp">
                     <SignUp />

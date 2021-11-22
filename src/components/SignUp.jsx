@@ -95,7 +95,7 @@ const SignUpForm = ({ onSubmit }) => {
 
 
 const SignUp = () => {
-    console.log('KUTSUUKO onSubmitia SignUp');
+    //console.log('KUTSUUKO onSubmitia SignUp');
 
     const [createNewUser] = useMutation(CREATE_NEW_USER_MUTATION);
     let history = useHistory();
