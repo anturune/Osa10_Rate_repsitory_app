@@ -20,6 +20,7 @@ const useRepositories = () => {
   //console.log('Mita tulee hookiin', orderDirection, orderBy, searchKeyword);
 
   //GraphQL haun ajo
+  // eslint-disable-next-line no-unused-vars
   const { data, error, loading } = useQuery(GET_REPOSITORIES,
     {
       //Ks. cache policy "utils/apolloClient.js", aktivoi toinen custom cache

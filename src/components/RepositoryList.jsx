@@ -1,5 +1,6 @@
 //import * as React from 'react';
-import React, { useEffect, useState } from 'react';
+//import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { FlatList, View, StyleSheet, Text } from 'react-native';
 import RenderItem from './RepositoryItem';
 import useRepositories from '../hooks/useRepositories';
@@ -45,6 +46,7 @@ const OredrRepositories = ({ setFilterCriteria }) => {
         <View style={{ backgroundColor: 'white', padding: 20, borderWidth: 2, borderColor: 'black', borderRadius: 5, margin: 20 }}>
             <Picker
                 selectedValue={setFilterCriteria}
+                // eslint-disable-next-line no-unused-vars
                 onValueChange={(itemValue, itemIndex) =>
                     setFilterCriteria(JSON.parse(itemValue))
                 }>
@@ -110,6 +112,7 @@ const OredrRepositories = ({ setFilterCriteria }) => {
     */
 };
 
+/*
 //En saanut tällä toimimaan
 //antaa erroria "is not a function"
 const FilteringFieldUsingUseEffectHook = ({ setFilterCriteria }) => {
@@ -125,7 +128,7 @@ const FilteringFieldUsingUseEffectHook = ({ setFilterCriteria }) => {
     //setFilterCriteria(filterCriteria);
     const onChangeSearch = query => setSearchQuery(query);
 
-    /*
+    
         useEffect(() => {
             let filterCriteriaJson = JSON.stringify({
                 searchKeyword: filterCriteria
@@ -135,7 +138,7 @@ const FilteringFieldUsingUseEffectHook = ({ setFilterCriteria }) => {
             console.log('AJO');
             setFilterCriteria(parseJson);
         }, [filterCriteria]);
-    */
+   
     return (
         <View style={{ padding: 20 }}>
             <Searchbar
@@ -146,6 +149,7 @@ const FilteringFieldUsingUseEffectHook = ({ setFilterCriteria }) => {
         </View>
     );
 };
+ */
 
 //Filteröintikentän komponentti, vaatii suurennuslasin painalluksen
 const FilteringField = ({ setFilterCriteria }) => {

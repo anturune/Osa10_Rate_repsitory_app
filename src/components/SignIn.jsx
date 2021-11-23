@@ -97,7 +97,7 @@ const SignIn = () => {
         try {
             //console.log('tuleeko tryihin DATAAA');
             const { data } = await signIn({ username, password });
-            //console.log('DATAAA', data.authorize.accessToken);
+            console.log('DATAAA', data.authorize.accessToken);
             history.push("/");
 
         } catch (e) {

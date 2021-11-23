@@ -2,32 +2,10 @@ import React from 'react';
 import { View, Image, StyleSheet, Pressable, Linking } from 'react-native';
 import Constants from 'expo-constants';
 import Text from './Text';
-import { useHistory, useParams } from "react-router-native";
+import { useHistory } from "react-router-native";
 
 
 
-//Kuvaa varten styleä
-const mainPageStyles = StyleSheet.create({
-    container: {
-        //alignItems: 'stretch',
-        backgroundColor: 'white',
-
-    },
-
-});
-
-/*
-//Muunnetaan "kiloiksi" yli 1000 arvot
-const YksikonMuunnos = ({ value }) => {
-    //console.log('yksikönmuunnos',value);
-    let kiloValue = 0;
-    if (value >= 1000) {
-        kiloValue = value / 1000;
-        return (<Text testId="ratingAverageTest" fontWeight="bold" fontSize="primary">{kiloValue.toFixed(1)}k</Text>);
-    }
-    return <Text testId="ratingAverageTokaTest" fontWeight="bold" fontSize="primary">{value}</Text>;
-};
-*/
 
 //Muunnetaan "kiloiksi" yli 1000 arvot
 const yksikonMuunnos = (value) => {
@@ -92,13 +70,7 @@ const repositoryHeaderStyles = StyleSheet.create({
 
     }
 });
-/*
-const renderSomething = ({ itemId, history }) => {
-    console.log('renderSomething', itemId);
 
-    history.push(`/singleRepsoitory/${itemId}`);
-};
-*/
 //Headerin renderöintiin komponentti
 const RepositoryHeader = ({ item }) => {
     let history = useHistory();

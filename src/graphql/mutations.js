@@ -61,16 +61,9 @@ mutation createUser($user:CreateUserInput!){
   }
 `;
 
-/*
-export const SIGN_IN_MUTATION = gql`
-mutation mutate($username: String!, $password: String!){
-    authorize(
-        credentials:
-            {username:$username,
-            password:$password}
-            ){
-            accessToken
-    }
+
+export const DELETE_REVIEW = gql`
+    mutation deleteReview($id:ID!){
+      deleteReview (id:$id)
   }
 `;
-*/

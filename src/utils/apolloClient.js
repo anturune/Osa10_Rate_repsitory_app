@@ -10,6 +10,8 @@ const httpLink = createHttpLink({
   uri: Constants.manifest.extra.env,
 });
 
+//Käytä tätä cachea, kun käytät/testaat "infinite scrollingia"
+// eslint-disable-next-line no-unused-vars
 const cache = new InMemoryCache({
   typePolicies: {
     Query: {

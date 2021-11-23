@@ -1,7 +1,10 @@
 import React from 'react';
-import { FlatList, View, StyleSheet, Text } from 'react-native';
-import { GET_AUTHORIZED_USER_REPOS } from '../graphql/queries';
-import { useQuery } from '@apollo/client';
+import { FlatList, View, StyleSheet, Text, Pressable, Alert } from 'react-native';
+import { GET_LOGGED_IN_USER } from '../graphql/queries';
+import { useQuery, useMutation } from '@apollo/client';
+import { DELETE_REVIEW } from '../graphql/mutations';
+import { useHistory } from "react-router-native";
+
 
 //SIngle viewin tyylit
 const repositoryReviewStyles = StyleSheet.create({
@@ -62,7 +65,19 @@ const repositoryReviewStyles = StyleSheet.create({
         color: 'grey',
         paddingBottom: 10
 
-    }
+    },
+    deleteButton: {
+        borderRadius: 5,
+        color: 'white',
+        backgroundColor: 'red',
+        padding: 15
+    },
+    viewRepoButton: {
+        borderRadius: 5,
+        color: 'white',
+        backgroundColor: 'blue',
+        padding: 15
+    },
 });
 
 const formatDate = (dateStringFromDb) => {
@@ -81,36 +96,109 @@ const formatDate = (dateStringFromDb) => {
     return strSplitDate[2] + '.' + strSplitDate[1] + '.' + strSplitDate[0];
 };
 //Reviewin renderöintiin
-const ReviewItem = ({ review }) => {
-    return <View style={repositoryReviewStyles.container}>
-        <View>
-            <Text style={repositoryReviewStyles.ratingCircleStyle}>{review.rating}</Text>
-        </View>
-        <View style={repositoryReviewStyles.bodyTextContainer}>
-            <Text style={repositoryReviewStyles.revivewerName}>{review.repository.fullName}</Text>
-            <Text style={repositoryReviewStyles.revivewDate}>{formatDate(review.createdAt)}</Text>
-            <Text style={repositoryReviewStyles.ratingText}>{review.text}</Text>
-        </View>
+//HUOM! Refetch -funktio tuodaan propsina
+const ReviewItem = ({ review, refetch }) => {
+    const [deleteReview] = useMutation(DELETE_REVIEW);
+    let history = useHistory();
 
-    </View>
-        ;
+    //"Ok"/"Cancel" -alertin toimintoon
+    //jos painaa "ok", niin silloin menee "handleDelete" funktiolle
+    //joka hoitaa deletoinnin ja datan refreshauksen
+    const deleteAlert = (id) =>
+        Alert.alert(
+            "Delete review",
+            "Are you sure you want delete...",
+            [
+                {
+                    text: "Cancel",
+                    //onPress: () => console.log("Cancel Pressed"),
+                    style: "cancel"
+                },
+                { text: "OK", onPress: () => handleDelete(id) }
+            ]
+        );
+
+    //Oman reviewin deletointiin
+    const handleDelete = async (id) => {
+        const { loading, data } = await deleteReview({ variables: { id } });
+        console.log('DATA', data, 'Loading', loading);
+
+        if (loading) {
+            return (
+                <View style={
+                    [
+                        {
+                            width: '100%',
+                            height: '100%',
+                            //backgroundColor: 'blue',
+                            alignItems: 'center',
+                            justifyContent: 'center'
 
 
+                        },
+                    ]}>
+                    <Text style={[
+                        {
+                            fontSize: 30,
+                            color: 'black',
+                        }
+
+                    ]}>Loading...</Text>
+                </View>);
+        }
+        //Ajetaan reftech, joka tuotu Flat listin propsilla tälle koponentille/funktiolle
+        //rfetch ajaa haun uudelleen, kun deletointi suoritettu
+        refetch();
+        history.push("/myReviews");
+
+    };
+
+    //Funktio yksittäiselle repositoriolle ohjaamiseen
+    const goToSingleRepo = (id) => {
+        history.push(`/singleRepsoitory/${id}`);
+    };
+
+    return (
+        <View style={{ flexDirection: 'column', alignItems: 'center' }}>
+            <View style={repositoryReviewStyles.container}>
+                <View>
+                    <Text style={repositoryReviewStyles.ratingCircleStyle}>{review.rating}</Text>
+                </View>
+                <View style={repositoryReviewStyles.bodyTextContainer}>
+                    <Text style={repositoryReviewStyles.revivewerName}>{review.repository.fullName}</Text>
+                    <Text style={repositoryReviewStyles.revivewDate}>{formatDate(review.createdAt)}</Text>
+                    <Text style={repositoryReviewStyles.ratingText}>{review.text}</Text>
+                </View>
+            </View>
+            <View style={{ flexDirection: 'row' }}>
+                <View style={{ padding: 15 }}>
+                    <Pressable onPress={() => goToSingleRepo(review.repositoryId)}>
+                        <Text style={repositoryReviewStyles.viewRepoButton}>View repository</Text>
+                    </Pressable>
+                </View>
+                <View style={{ padding: 15 }}>
+                    <Pressable onPress={() => deleteAlert(review.id)}>
+                        <Text style={repositoryReviewStyles.deleteButton}>Delete review</Text>
+                    </Pressable>
+                </View>
+            </View>
+
+        </View>);
 };
+
 
 //Määritellään yksittäisen FlatList renderöinnin tyyli Viewille
 const ItemSeparator = () => <View style={repositoryReviewStyles.separator} />;
 
 const AuthorizedUserReviews = () => {
 
-    const { loading, data, fetchMore } = useQuery(GET_AUTHORIZED_USER_REPOS, {
-        fetchPolicy: "cache",
-        //Ladataan haluttu määrä rviewejä--> määritys "first:"-argumenttiin ja alla määritelty, 
-        //että kun puolet näkyy, niin ladataan yksi lisää yhden ladatun lisäksi
+    const { loading, data, refetch } = useQuery(GET_LOGGED_IN_USER, {
+        fetchPolicy: 'cache',
         variables: { includeReviews: true },
     });
 
     if (loading) {
+        console.log('LOADING?', loading);
         return (
             <View style={
                 [
@@ -145,24 +233,27 @@ const AuthorizedUserReviews = () => {
 
     //console.log('Reviews', authReviews, 'Montako:', authReviews.length);
 
+    //Tyhjän listan käsittelyyn funktio
+    //HUOM! "refetch()" -ajetaan ihan aluksi
     const handleEmpty = () => {
+        //Ensin ajetaan uudelleen haku, koska kun uusi review on luotu, niin se
+        //ei näy ennen listalla, ellei hakua tehdä uusiksi. Jos sittenkään ei löydy
+        //rviewejä, niin palautetaaan teksti "You have not reviewed yet!"
+        refetch();
         return (
-
             <Text style={{ color: 'black', fontSize: 25, textAlign: 'center' }}> You have not reviewed yet!</Text>
-
         );
     };
 
     return (
         <FlatList
             data={authReviews}
-            renderItem={({ item }) => <ReviewItem review={item} />}
+            renderItem={({ item }) => <ReviewItem review={item} refetch={refetch} />}
             ItemSeparatorComponent={ItemSeparator}
             keyExtractor={(item, index) => index.toString()}
             //Jos käyttäjä ei ole arvostellut yhtään niin renderöi
             //"handleEmpty"-funktiossa kerrotun tekstin
             ListEmptyComponent={handleEmpty}
-        //ListHeaderComponent={this.renderHeader}
         >
         </FlatList>
     );

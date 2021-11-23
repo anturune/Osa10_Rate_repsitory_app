@@ -133,6 +133,8 @@ const SignUp = () => {
             console.log('SignUp.jsx data', data);
             //Loggaudutaan sisään, kun uusi käyttäjä luotu
             const { error } = await signIn({ username, password });
+
+            console.log('Error', error);
             //Kun uusi käyttäjä luotu, ohjataa repsoitory listaan
             history.push("/");
         } catch (e) {
